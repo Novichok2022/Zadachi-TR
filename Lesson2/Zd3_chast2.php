@@ -8,7 +8,7 @@
 </head>
 <body>
     
-<form action="" method="POST">
+<form action="" method="post">
 <textarea name="text" cols="70" rows="15"><?php if (!empty(trim($_POST['text'])))
     echo trim($_POST['text']);?>
 </textarea>
@@ -17,7 +17,6 @@
 
 <?php
 if (!empty(trim($_POST['text']))) 
-
 {
 	$text = trim($_POST['text']);
         
@@ -25,7 +24,7 @@ if (!empty(trim($_POST['text'])))
         
 	echo "<br> $vstavka_ssilok <br><br>";
 } else {
-    echo 'dВведіть текст з URL для редагування <br>';
+    echo 'Введіть текст з URL для редагування <br>';
 }
 
 ?>
