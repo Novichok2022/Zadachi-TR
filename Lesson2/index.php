@@ -6,7 +6,7 @@
 <body>
 
 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-    Введiть Ваш email: <input type="text" name="email" value="<?php if (!empty($_POST['email'])):echo trim(($_POST['email'])) ?>
+    Введiть Ваш email: <input type="text" name="email" value="<?php if (!empty($_POST['email'])):echo trim(str_replace(' ', '', $_POST['email'])) ?>
 	<?php endif ?>"> <br><br>
     <input type="submit">
 </form>
@@ -15,7 +15,7 @@
 if (!empty(trim($_POST['email']))) {
     
     /** @var string $email */
-    $email = trim($_POST['email']);
+    $email = trim(str_replace(' ', '', $_POST['email']));
     
     /** @var int $email_len 
      * Довжина email i мiнус 1 символ для коректної роботи з strpos()
