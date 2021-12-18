@@ -6,7 +6,7 @@
 <body>
 
 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-    Введіть ваше прізвище: <input type="text" name="surname" value="<?php if (!empty($_POST['surname'])):echo trim(($_POST['surname'])) ?>
+    Введіть ваше прізвище: <input type="text" name="surname" value="<?php if (!empty($_POST['surname'])):echo trim(str_replace(' ', '', $_POST['surname'])) ?>
 	<?php endif ?>"> <br><br>
     Введіть ваше ім'я: <input type="text" name="name" value="<?php if (!empty($_POST['name'])):echo trim(($_POST['name'])) ?>
 	<?php endif ?>"> <br><br>
@@ -19,7 +19,7 @@
 
 if (!empty(trim($_POST['surname'])) && !empty(trim($_POST['name'])) && !empty(trim($_POST['patronymic']))) {
     
-    $surname = trim($_POST['surname']);
+    $surname = trim(str_replace(' ', '', $_POST['surname']));
     $name = trim($_POST['name']);
     $patronymic = trim($_POST['patronymic']);
         
