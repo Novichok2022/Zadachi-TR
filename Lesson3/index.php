@@ -72,11 +72,11 @@ if($kof_viku === 0 || $kof_viku === -1){
 if($engine == 'benzin'){
         $suma_akcizu = round((BAZ_STAVKA_BENZIN * ($volume/1000) * $kof_viku), 2);
         $total_suma_avto = round(($suma_akcizu + $price), 2);
-        include 'table/table.php';
+        include 'table/table1.php';
 }else{
         $suma_akcizu = round((BAZ_STAVKA_DIZEL * ($volume/1000) * $kof_viku), 2);
         $total_suma_avto = round(($suma_akcizu + $price), 2);
-        include 'table/table.php';
+        include 'table/table1.php';
         
     }
 

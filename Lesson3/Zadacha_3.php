@@ -31,3 +31,5 @@ $piramid_mario = '';
 		echo "<div id=\"right\"><div class=\"content\">$piramid_mario</div></div>";
 	}
 ?>
+
+    
