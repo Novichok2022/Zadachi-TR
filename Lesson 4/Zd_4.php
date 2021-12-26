@@ -51,5 +51,4 @@ for($i = 0; $i <= $arr_count; $i++ )
 }
 
 echo $q . '<br>';
-echo mb_strlen('sadfdf dxhxdfgnSB szvsv zsrgsvwa sawaF');
 //echo  mb_strlen('спеціальні');
