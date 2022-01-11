@@ -77,3 +77,18 @@ function findActionArtcle($array) {
     } 
     return $action_article;
 }
+
+
+function sortZahluschk(array $array) {
+     
+     $arr_suma_discont = sumaDiscountforArticle($array);
+     $array_tovar_disc = sumaTovarzDiscount($arr_suma_discont);
+     
+     uasort($array_tovar_disc, function ($x, $y) {
+    if (($x['discounted price'] == $y['discounted price']) || ($x['discounted price'] < $y['discounted price']) || 
+($x['discounted price'] > $y['discounted price'])) {
+        return 0;
+    }
+    });
+    return $array_tovar_disc;
+}
