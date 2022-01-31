@@ -1,7 +1,9 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+include_once 'FileEdit.php';
 ?>
 <html>
 <head>
@@ -28,20 +30,19 @@ error_reporting(E_ALL);
         }
         
        $upload_files = scandir('upload');
-//       $upload_files1 = scandir(__DIR__ . '/upload');
-//       var_dump($_SERVER['DOCUMENT_ROOT']);
-//       var_dump(__DIR__);
-//       var_dump(pathinfo($upload_files[2],PATHINFO_EXTENSION));
-//       var_dump($upload_files);
-//       var_dump($upload_files1);
+        
+       $obj = new FileEdit();
+               
+       //Задача 1 -  розіл 6
+       $moveFilesOverTime = $obj->moveFilesOverTime($upload_dir, 'backup', 3);
        
-//       include 'ZD_1.php';
-//   
-//       include 'ZD_2.php';
-//          
-       include 'ZD_3.php';
-//    
-var_dump($words);
+      //Задача 2 -  розіл 6
+       $obj->deleteFilesThatContainsWord('upload', 'txt', 'тест');
+      
+       //Задача 3 -  розіл 6
+       $obj->filePutReverseContent('upload/source.txt', 'dest.txt');
+       
+          
 
 
 foreach ($upload_files as $filename) {
