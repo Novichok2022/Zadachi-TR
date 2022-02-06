@@ -1,6 +1,6 @@
 <?php
 
-class Employee implements IUser, IEmployee {
+class Employee implements IEmployee {
 
     /**
      * @var string
