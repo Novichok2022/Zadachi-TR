@@ -66,15 +66,20 @@ abstract class Model implements DbModelInterface
     }
 
     /**
-     * @param $params
+     * @param array $params
+     *the array must be of the form ['table field name' => 'ASC' or 'DESC']
      * @return $this
      */
-    public function sort($params)
+    public function sort(array $params = [])
     {
-        /*
-          TODO
-          return $this;
-         */
+        $sortParams = '';
+        foreach ($params as $key => $param) {
+            $sortParams .= "`$key` $param, ";
+        }
+        $sortParams = rtrim($sortParams, ", ");
+
+        $this->sql .= " order by $sortParams";
+
         return $this;
     }
 

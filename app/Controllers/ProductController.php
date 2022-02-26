@@ -37,6 +37,7 @@ class ProductController extends Controller
                 ->sort($this->getSortParams())
                 ->getCollection()
                 ->select();
+
         $this->set('products', $products);
 
         $this->renderLayout();
@@ -117,41 +118,6 @@ class ProductController extends Controller
         }
 
         return $params;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSortParams_old(): array
-    {
-        /*
-          if (isset($_GET['sort'])) {
-          $sort = $_GET['sort'];
-          } else
-          {
-          $sort = "name";
-          }
-         * 
-         */
-        $sort = filter_input(INPUT_GET, 'sort');
-        if (!isset($sort)) {
-            $sort = "name";
-        }
-        /*
-          if (isset($_GET['order']) && $_GET['order'] == 1) {
-          $order = "ASC";
-          } else {
-          $order = "DESC";
-          }
-         * 
-         */
-        if ((int) filter_input(INPUT_GET, 'order') === 1) {
-            $order = "DESC";
-        } else {
-            $order = "ASC";
-        }
-
-        return [$sort, $order];
     }
 
     /**
