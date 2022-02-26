@@ -69,16 +69,12 @@ abstract class Model implements DbModelInterface
      * @param $params
      * @return $this
      */
-    public function sort(array $params = [])
+    public function sort($params)
     {
-        $str = '';
-        foreach ($params as $key => $param) {
-            $str .= "`$key` $param, ";
-        }
-        $str = rtrim($str, ", ");
-
-        $this->sql .= " order by $str";
-
+        /*
+          TODO
+          return $this;
+         */
         return $this;
     }
 

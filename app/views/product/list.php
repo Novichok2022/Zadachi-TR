@@ -24,8 +24,6 @@
 
 <?php
 $products =  $this->get('products');
-//var_dump($products);
-var_dump($_POST);
 
 foreach($products as $product)  :
 ?>
