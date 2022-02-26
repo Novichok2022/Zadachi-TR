@@ -21,10 +21,4 @@ interface DbModelInterface
      */
     public function getPrimaryKeyName(): string;
 
-    /**
-     * Return current model id
-     * 
-     * @return null|int
-     */
-    public function getId(): ?int;
 }

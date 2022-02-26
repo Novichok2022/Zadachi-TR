@@ -1,4 +1,6 @@
-<form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
+<form method="POST" action="<?php use Core\Route;
+
+$_SERVER['PHP_SELF']; ?>">
     <select name='sortfirst'>
         <option <?php echo filter_input(INPUT_POST, 'sortfirst') === 'price_ASC' ? 'selected' : ''; ?>
                 value="price_ASC">від дешевших до дорожчих
@@ -15,7 +17,7 @@
             по спаданню кількості
         </option>
     </select>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Відправити">
 </form>
 
 <div class="product">
@@ -24,7 +26,6 @@
 
 <?php
 $products =  $this->get('products');
-
 foreach($products as $product)  :
 ?>
     <div class="product">
@@ -34,7 +35,10 @@ foreach($products as $product)  :
         <p> Кількість: <?php echo $product['qty']?></p>
         <p><?php if(!($product['qty'] > 0)) { echo 'Нема в наявності'; } ?></p>
         <p>
-            <?= \Core\Url::getLink('/product/edit', 'Редагувати', array('id'=>$product['id'])); ?>
+            <a href="<?php echo "/product/edit"?>?id=<?=$product['id'] ?>" class="btn btn-success btn-sm" data-toggle="modal"><i class="fa fa-edit"></i> Редагувати</a>
+        </p>
+        <p>
+            <a href="<?php echo "/product/delete"?>?id=<?=$product['id'] ?>" class="btn btn-danger btn-sm" data-toggle="modal"><i class="fa fa-trash"></i> Видалити</a>
         </p>
     </div>
 <?php endforeach; ?>

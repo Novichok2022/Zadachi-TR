@@ -6,12 +6,31 @@ namespace Controllers;
 
 use Core\Controller;
 use Core\View;
+use Request\ProductEditRequest;
+use Request\ProductAddRequest;
+
 
 /**
  * Class ProductController
  */
 class ProductController extends Controller
 {
+    /**
+     * @var ProductEditRequest
+     */
+    private $productEditRequest;
+
+    /**
+     * @var ProductEditRequest
+     */
+    private $productAddRequest;
+
+    public function __construct()
+    {
+        $this->productEditRequest = new ProductEditRequest();
+        $this->productAddRequest = new ProductAddRequest();
+        parent::__construct();
+    }
 
     /**
      * Product index action that shows product list
@@ -69,17 +88,24 @@ class ProductController extends Controller
      */
     public function editAction(): void
     {
-        $model = $this->getModel('Product');
-        $this->set('saved', 0);
         $this->set("title", "Редагування товару");
-        $id = filter_input(INPUT_POST, 'id');
-        if ($id) {
-            $values = $model->getPostValues();
-            $this->set('saved', 1);
-            $model->saveItem($id, $values);
-        }
-        $this->set('product', $model->getItem($this->getId()));
+        $id = $this->getId();
+        $request = $this->productEditRequest;
+        $model = $this->getModel('Product');
+        $product = $model->getItem($id);
+        $data = $request->formCheck();
 
+        if (isset($data['Eror']) || empty($data)) {
+            $this->set('message', 'Введіть коректні дані');
+        } else {
+            $model->updateItem($id, $data);
+            $product = $model->getItem($id);
+            $this->set('message', 'Запис успішно оновлено');
+        }
+
+        $this->set('product', $product);
+
+        $this->renderLayout();
         $this->renderLayout();
     }
 
@@ -90,11 +116,43 @@ class ProductController extends Controller
      */
     public function addAction(): void
     {
-        $model = $this->getModel('Product');
         $this->set("title", "Додавання товару");
-        if ($values = $model->getPostValues()) {
-            $model->addItem($values);
+        $model = $this->getModel('Product');
+        $request = $this->productAddRequest;
+        $data = $request->formCheck();
+
+        if (!isset($data['Eror']) && !empty($data)) {
+            $model->addItem($data);
         }
+        $this->renderLayout();
+    }
+
+    /**
+     * Delete product from DB
+     *
+     * @return void
+     */
+    public function deleteaction(): void
+    {
+        $this->set("title", "Видалення товару");
+        $id = $this->getId();
+        if ($id !== false) {
+            $model = $this->getModel('Product');
+            $product = $model->getItem($id);
+
+            if (isset($_GET['value'])) {
+                if ($_GET['value'] === 'yes') {
+                    $model->deleteItem($id);
+                    header('Location: /product/list');
+                    exit();
+                } else {
+                    header('Location: /');
+                    exit();
+                }
+            }
+        }
+        $this->set('product', $product);
+
         $this->renderLayout();
     }
 
@@ -125,15 +183,11 @@ class ProductController extends Controller
      */
     public function getId()
     {
-        /*
-          if (isset($_GET['id'])) {
-
-          return $_GET['id'];
-          } else {
-          return NULL;
-          }
-         */
-        return filter_input(INPUT_GET, 'id');
+        if (filter_has_var(INPUT_GET, 'id')) {
+            return filter_input(INPUT_GET, 'id');
+        } else {
+            return false;
+        }
     }
 
 }
