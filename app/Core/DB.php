@@ -60,22 +60,22 @@ class DB
         }
     }
 
-    /**
-     * Delete provided entity
-     * 
-     * @param DbModelInterface $model
-     * @return bool
-     */
-    public function deleteEntity(DbModelInterface $model): bool
-    {
-        $dbh = $this->getConnection();
-        $sql = sprintf("DELETE FROM %s WHERE %s = ?",
-                $model->getTableName(),
-                $model->getPrimaryKeyName()
-        );
-        $statement = $dbh->prepare($sql);
-
-        return $statement->execute($model->getId());
-    }
+//    /**
+//     * Delete provided entity
+//     *
+//     * @param DbModelInterface $model
+//     * @return bool
+//     */
+//    public function deleteEntity(DbModelInterface $model): bool
+//    {
+//        $dbh = $this->getConnection();
+//        $sql = sprintf("DELETE FROM %s WHERE %s = ?",
+//                $model->getTableName(),
+//                $model->getPrimaryKeyName()
+//        );
+//        $statement = $dbh->prepare($sql);
+//
+//        return $statement->execute($model->getId());
+//    }
 
 }

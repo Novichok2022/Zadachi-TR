@@ -34,7 +34,7 @@ class ProductController extends Controller
 
     /**
      * Product index action that shows product list
-     * 
+     *
      * @return void
      */
     public function indexAction(): void
@@ -44,7 +44,7 @@ class ProductController extends Controller
 
     /**
      * Product list action
-     * 
+     *
      * @return void
      */
     public function listAction(): void
@@ -52,10 +52,10 @@ class ProductController extends Controller
         $this->set('title', "Товари");
 
         $products = $this->getModel('Product')
-                ->initCollection()
-                ->sort($this->getSortParams())
-                ->getCollection()
-                ->select();
+            ->initCollection()
+            ->sort($this->getSortParams())
+            ->getCollection()
+            ->select();
 
         $this->set('products', $products);
 
@@ -64,7 +64,7 @@ class ProductController extends Controller
 
     /**
      * Single product view action
-     * 
+     *
      * @return void
      */
     public function viewAction(): void
@@ -73,9 +73,9 @@ class ProductController extends Controller
 
         $product = $this->getModel('Product');
         $product->initCollection()
-                ->filter(['id', $this->getId()])
-                ->getCollection()
-                ->selectFirst();
+            ->filter(['id', $this->getId()])
+            ->getCollection()
+            ->selectFirst();
         $this->set('products', $product);
 
         $this->renderLayout();
@@ -83,21 +83,29 @@ class ProductController extends Controller
 
     /**
      * Shows product editing page
-     * 
+     *
      * @return void
      */
     public function editAction(): void
     {
         $this->set("title", "Редагування товару");
-        $id = $this->getId();
+        $this->set('message', 'Перевіряйте коректність ведених даних');
+        $id = $this->getIdFromUrl();
         $request = $this->productEditRequest;
         $model = $this->getModel('Product');
         $product = $model->getItem($id);
+
+        if ($product === null || empty($product)) {
+            $this->redirect('/eror/eror404');
+        }
+
         $data = $request->formCheck();
 
-        if (isset($data['Eror']) || empty($data)) {
+        if (isset($data['Eror'])) {
             $this->set('message', 'Введіть коректні дані');
-        } else {
+        } elseif (isset($_GET['sucsess'])) {
+            $this->set('message', 'Товар успішно збережено');
+        } elseif(!empty($data)) {
             $model->updateItem($id, $data);
             $product = $model->getItem($id);
             $this->set('message', 'Запис успішно оновлено');
@@ -106,12 +114,11 @@ class ProductController extends Controller
         $this->set('product', $product);
 
         $this->renderLayout();
-        $this->renderLayout();
     }
 
     /**
      * Shows product add page
-     * 
+     *
      * @return void
      */
     public function addAction(): void
@@ -120,10 +127,12 @@ class ProductController extends Controller
         $model = $this->getModel('Product');
         $request = $this->productAddRequest;
         $data = $request->formCheck();
-
+        
         if (!isset($data['Eror']) && !empty($data)) {
             $model->addItem($data);
+            $this->redirect('/product/edit?id=' . $model->getId() . '&sucsess');
         }
+
         $this->renderLayout();
     }
 
@@ -135,22 +144,23 @@ class ProductController extends Controller
     public function deleteaction(): void
     {
         $this->set("title", "Видалення товару");
-        $id = $this->getId();
-        if ($id !== false) {
-            $model = $this->getModel('Product');
-            $product = $model->getItem($id);
+        $id = $this->getIdFromUrl();
+        $model = $this->getModel('Product');
+        $product = $model->getItem($id);
+
+        if($product === null || empty($product)) {
+            $this->redirect('/eror/eror404');
+        }
 
             if (isset($_GET['value'])) {
                 if ($_GET['value'] === 'yes') {
                     $model->deleteItem($id);
-                    header('Location: /product/list');
-                    exit();
+                    $this->redirect('/product/list');
                 } else {
-                    header('Location: /');
-                    exit();
+                    $this->redirect('/');
                 }
             }
-        }
+
         $this->set('product', $product);
 
         $this->renderLayout();
@@ -181,7 +191,7 @@ class ProductController extends Controller
     /**
      * @return mixed
      */
-    public function getId()
+    public function getIdFromUrl()
     {
         if (filter_has_var(INPUT_GET, 'id')) {
             return filter_input(INPUT_GET, 'id');

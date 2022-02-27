@@ -208,6 +208,15 @@ abstract class Model implements DbModelInterface
         return $this->idColumn;
     }
 
+    public function getId(): ?int
+    {
+        $conection = new DB();
+        $db = $conection->getConnection();
+        $id = (int) $db->lastInsertId();
+
+        return $id;
+    }
+
     /**
      * Створює масив неіменованих параметрів для оновлення даних
      *
@@ -265,5 +274,7 @@ abstract class Model implements DbModelInterface
         return $result;
 
     }
+
+
 
 }

@@ -1,5 +1,6 @@
  <form action="edit?id=<?= $product['id'] ?>" method="post" data-toggle="validator">
-     <?php echo $this->get('message')?>
+     <div style="text-align:center;"><b><?php echo $this->get('message')?></b></div>
+
      <fieldset disabled>
          <div class="form-group">
              <label for="disabledTextInput">Ідентифікатор редагуючого товару</label>

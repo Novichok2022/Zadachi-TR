@@ -79,6 +79,19 @@ abstract class Controller
                         ->select();
     }
 
+
+    /**
+     * @param string $route
+     * @return void
+     */
+    protected function redirect(string $route)
+    {
+        $serverHost = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+        $url = $serverHost . Route::getBasePath() . $route;
+        header("Location: $url");
+        exit;
+    }
+
     /**
      * Runs provided route
      * 
